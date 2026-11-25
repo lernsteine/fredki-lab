@@ -1,0 +1,70 @@
+name: FredKI-Image bauen
+
+# Baut bei jeder Änderung auf v2 ein fertiges Docker-Image und legt es unter
+# ghcr.io/lernsteine/fredki-lab ab. Der Hoster installiert dieses Image wie
+# das offizielle MaxKB-Image (siehe INSTALLATION.md).
+
+run-name: FredKI-Image ${{ github.sha }}
+
+on:
+  push:
+    branches: [v2]
+    paths-ignore:
+      - '**.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: fredki-image
+  cancel-in-progress: true
+
+jobs:
+  build-and-push:
+    if: github.repository == 'lernsteine/fredki-lab'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Speicherplatz auf dem Build-Server freimachen
+        run: |
+          sudo rm -rf /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+          df -h /
+
+      - name: Docker Buildx einrichten
+        uses: docker/setup-buildx-action@v4
+
+      - name: Bei der GitHub Container Registry anmelden
+        uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Oberfläche bauen
+        run: |
+          docker buildx build --target web-build --output type=local,dest=./web-build-output -f installer/Dockerfile .
+          rm -rf ./ui
+          cp -r ./web-build-output/ui ./
+          rm -rf ./web-build-output
+
+      - name: Image bauen und hochladen
+        run: |
+          SHORT_SHA=$(git rev-parse --short HEAD)
+          IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}"
+          docker buildx build \
+            --platform linux/amd64 \
+            --build-arg DOCKER_IMAGE_TAG="fredki-lab-${SHORT_SHA}" \
+            --build-arg BUILD_AT="$(TZ=Europe/Berlin date +'%Y-%m-%dT%H:%M')" \
+            --build-arg GITHUB_COMMIT="${SHORT_SHA}" \
+            --label org.opencontainers.image.source="https://github.com/${GITHUB_REPOSITORY}" \
+            --label org.opencontainers.image.title="FredKI Lab" \
+            --tag "${IMAGE}:lab" \
+            --tag "${IMAGE}:lab-${SHORT_SHA}" \
+            --push \
+            -f installer/Dockerfile .
+          echo "### Fertig: \`${IMAGE}:lab\` (Version \`lab-${SHORT_SHA}\`)" >> "$GITHUB_STEP_SUMMARY"
