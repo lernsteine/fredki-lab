@@ -1,0 +1,61 @@
+export default {
+  title: 'Inloggning',
+  loginForm: {
+    username: {
+      label: 'Användarnamn',
+      placeholder: 'Ange användarnamn',
+      requiredMessage: 'Ange användarnamn',
+      lengthMessage: 'Längden måste vara mellan 4 och 20 tecken',
+    },
+    password: {
+      label: 'Lösenord',
+      placeholder: 'Ange lösenord',
+      requiredMessage: 'Ange lösenord',
+      lengthMessage: 'Längden måste vara mellan 6 och 20 tecken',
+    },
+    captcha: {
+      label: 'Verifieringskod',
+      placeholder: 'Ange verifieringskod',
+      requiredMessage: 'Ange verifieringskod',
+      validatorMessage: 'Verifieringskoden är felaktig',
+    },
+    new_password: {
+      label: 'Nytt lösenord',
+      placeholder: 'Ange nytt lösenord',
+      requiredMessage: 'Ange nytt lösenord',
+    },
+    re_password: {
+      label: 'Bekräfta lösenord',
+      placeholder: 'Bekräfta lösenordet',
+      requiredMessage: 'Bekräfta lösenordet',
+      validatorMessage: 'Lösenorden matchar inte',
+    },
+    email: {
+      label: 'E-post',
+      placeholder: 'Ange e-postadress',
+      requiredMessage: 'Ange e-postadress',
+      validatorEmail: 'Ange en giltig e-postadress!',
+    },
+  },
+  jump_tip: 'Du omdirigeras till autentiseringskällans sida för autentisering',
+  jump: 'Omdirigera',
+  resetPassword: 'Byt lösenord',
+  forgotPassword: 'Glömt lösenord',
+  userRegister: 'Användarregistrering',
+  buttons: {
+    login: 'Logga in',
+    register: 'Registrera',
+    backLogin: 'Tillbaka till inloggning',
+    checkCode: 'Verifiera nu',
+  },
+  newPassword: 'Nytt lösenord',
+  enterPassword: 'Ange ditt nya lösenord',
+  useEmail: 'Använd e-post',
+  moreMethod: 'Fler inloggningsmetoder',
+  verificationCode: {
+    placeholder: 'Ange verifieringskoden',
+    getVerificationCode: 'Hämta verifieringskod',
+    successMessage: 'Om e-postadressen redan är registrerad skickar vi ett e-postmeddelande. Kontrollera din inkorg',
+    resend: 'Skicka igen',
+  },
+}

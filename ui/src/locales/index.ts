@@ -27,6 +27,10 @@ export function getBrowserLang() {
     return 'zh-CN'
   }
 
+  if (browserLang.startsWith('sv')) {
+    return 'sv-SE'
+  }
+
   return 'de-DE'
 }
 

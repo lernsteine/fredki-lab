@@ -1,0 +1,56 @@
+export default {
+  title: 'Utlösare',
+  tip: 'När utlösaren aktiveras kör systemet automatiskt uppgiften baserat på inställningarna för indataparametrar',
+  task: 'Uppgift',
+  nextTime: 'Nästa körning',
+  triggerTask: 'Utlösaruppgift',
+  taskExecution: 'Uppgiftskörning',
+  triggerSource: 'Utlösarkälla',
+  delete: {
+    confirmTitle: 'Bekräfta radering av utlösare:',
+    confirmTitle2: 'utlösare?',
+  },
+  triggerCycle: {
+    title: 'Utlösarcykel',
+    days: 'Dagar',
+    daily: 'Daglig utlösning',
+    weekly: 'Veckovis utlösning',
+    monthly: 'Månatlig utlösning',
+    interval: 'Intervallutlösning',
+    monday: 'Måndag',
+    tuesday: 'Tisdag',
+    wednesday: 'Onsdag',
+    thursday: 'Torsdag',
+    friday: 'Fredag',
+    saturday: 'Lördag',
+    sunday: 'Söndag',
+    hours: 'Timmar',
+    minutes: 'Minuter',
+    cronExpression: 'Cron-uttryck',
+    switchCycle: 'Växla till utlösarcykel',
+    switchCron: 'Växla till Cron-uttryck',
+    placeholder: 'Ange ett Cron-uttryck (t.ex. 0 0 1 * *)'
+
+  },
+  type: {
+    scheduled: 'Schemalagd utlösare',
+    scheduledDesc: 'Kör uppgifter månadsvis, veckovis, dagligen eller med intervall',
+    event: 'Händelseutlösare',
+    eventDesc: 'Kör uppgifter när en viss händelse skickas',
+  },
+  createTrigger: 'Skapa utlösare',
+  editTrigger: 'Redigera utlösare',
+  from: {
+    triggerName: {
+      label: 'Utlösarens namn',
+      placeholder: 'Ange utlösarens namn',
+      requiredMessage: 'Ange utlösarens namn',
+    },
+    event_url: {
+      label: 'Kopiera URL till din applikation',
+    },
+  },
+  requestParameter: 'Begäransparametrar',
+  triggerParam: 'Utlösarens indataparametrar',
+  errorMsg: 'Felmeddelande',
+}

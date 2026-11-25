@@ -1,0 +1,26 @@
+export default {
+  quickCreatePlaceholder: 'Skapa snabbt ett tomt dokument',
+  quickCreateName: 'dokumentnamn',
+  noData: 'Inga data',
+  loading: 'Laddar',
+  noMore: 'Inget mer! ',
+  noDesc: ' Ingen beskrivning',
+  selectParagraph: {
+    title: 'Välj segment',
+    error: 'Bearbeta endast misslyckade segment',
+    all: 'Alla segment',
+  },
+  folder: {
+    addFolder: 'Lägg till mapp',
+    addChildFolder: 'Lägg till undermapp',
+    editFolder: 'Redigera mapp',
+    folderNamePlaceholder: 'Ange ett namn',
+    requiredMessage: 'Välj en mapp',
+    deleteConfirmMessage: 'Mappar med resurser kommer att raderas, var försiktig.',
+    ascTime: 'Skapandetid: stigande',
+    descTime: 'Skapandetid: fallande',
+    ascName: 'Namn: stigande',
+    descName: 'Namn: fallande',
+    custom: 'Dra för att sortera',
+  },
+}
