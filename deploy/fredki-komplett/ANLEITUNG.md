@@ -21,7 +21,8 @@ Dieses Paket startet ein vollständig eingerichtetes FredKI® unter
 ## Installation
 
 1. Diesen Ordner `fredki-komplett` auf den Server kopieren.
-2. Datei `.env.example` nach `.env` kopieren und **eine** Zeile ausfüllen:
+2. In der Datei `.env` (falls nicht mitgeliefert: `.env.example` nach `.env` kopieren)
+   **eine** Zeile ausfüllen:
 
    ```
    MODEL_API_URL=http://<gpu-server>:8000/v1
@@ -38,14 +39,10 @@ Dieses Paket startet ein vollständig eingerichtetes FredKI® unter
 Am Ende zeigt das Skript Adresse, Benutzer und das erzeugte Admin-Passwort an.
 Das Passwort steht zusätzlich in `daten/setup/admin-passwort.txt`.
 
-## Ist das FredKI-Paket privat?
+## Zugang zum FredKI-Paket
 
-Dann vor Schritt 3 einmalig anmelden (Zugangsdaten von LERNSTEINE):
-
-```bash
-docker login ghcr.io -u <github-benutzer>
-# Passwort: GitHub-Token mit der Berechtigung read:packages
-```
+Das Paket ist privat. Die Zugangsdaten (`GHCR_USER`, `GHCR_TOKEN`) stehen bereits in
+der von LERNSTEINE gelieferten `.env` – `install.sh` meldet sich damit automatisch an.
 
 ## Betrieb
 

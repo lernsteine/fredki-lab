@@ -33,11 +33,20 @@ grep -q '^MODEL_API_URL=.\+' .env || fehler "MODEL_API_URL in .env eintragen (Ad
 
 mkdir -p daten/fredki daten/caddy daten/setup
 
+# automatisch beim GitHub-Paketspeicher anmelden, falls Zugangsdaten in .env stehen
+ghcr_user=$(grep '^GHCR_USER=' .env | cut -d= -f2- || true)
+ghcr_token=$(grep '^GHCR_TOKEN=' .env | cut -d= -f2- || true)
+if [ -n "${ghcr_user}" ] && [ -n "${ghcr_token}" ]; then
+  echo "${ghcr_token}" | docker login ghcr.io -u "${ghcr_user}" --password-stdin >/dev/null \
+    || fehler "Anmeldung bei ghcr.io fehlgeschlagen – GHCR_USER/GHCR_TOKEN in .env prüfen."
+  echo "Beim FredKI-Paketspeicher angemeldet."
+fi
+
 echo "Lade aktuelle Versionen ..."
 if ! docker compose pull fredki searxng caddy setup; then
   echo >&2
-  echo "Das FredKI-Image konnte nicht geladen werden. Ist das Paket privat, zuerst anmelden:" >&2
-  echo "  docker login ghcr.io -u <github-benutzer>   (Passwort: GitHub-Token mit read:packages)" >&2
+  echo "Das FredKI-Image konnte nicht geladen werden." >&2
+  echo "Ist das Paket privat: GHCR_USER und GHCR_TOKEN in .env eintragen (von LERNSTEINE)." >&2
   exit 1
 fi
 
