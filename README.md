@@ -33,10 +33,22 @@ All plugins work with any FredKI server: self-hosted from this repository or the
 FredKI runs as a Docker container. Start it with:
 
 ```bash
-docker run -d --name=maxkb --restart=always -p 8080:8080 -v ~/.maxkb:/opt/maxkb 1panel/maxkb
+docker run -d --name=fredki --restart=always -p 8080:8080 -v ~/.maxkb:/opt/maxkb ghcr.io/lernsteine/fredki:latest
 ```
 
-The command uses the official MaxKB image, on which FredKI is based. Then open `http://your_server_ip:8080` and log in with the default administrator account:
+The image is built automatically from this repository, so it contains all FredKI changes (for example the German user interface). Each build is also available under a fixed version tag (the short commit hash, e.g. `ghcr.io/lernsteine/fredki:1fd38a4`) for production systems that should only be updated deliberately.
+
+To update, pull the new image and recreate the container (your data stays in `~/.maxkb`):
+
+```bash
+docker pull ghcr.io/lernsteine/fredki:latest
+docker rm -f fredki
+# then run the docker run command above again
+```
+
+Already running the official MaxKB image? Back up `~/.maxkb`, then stop the old container and start the command above with the same data directory.
+
+Then open `http://your_server_ip:8080` and log in with the default administrator account:
 
 - username: `admin`
 - password: `MaxKB@123..`
