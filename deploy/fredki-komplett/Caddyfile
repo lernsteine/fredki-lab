@@ -1,0 +1,9 @@
+# HTTPS mit automatischem Let's-Encrypt-Zertifikat für die Domain aus .env
+{$DOMAIN} {
+	encode gzip
+
+	@root path /
+	redir @root /admin/ 302
+
+	reverse_proxy fredki:8080
+}

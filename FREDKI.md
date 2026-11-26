@@ -15,6 +15,20 @@ Dieses Repo (`lernsteine/fredki-lab`) ist eine Arbeitskopie von `lernsteine/Fred
 
 ## Änderungen
 
+### Komplettpaket „FredKI Komplett“ (Bilder + Websuche, fertig eingerichtet)
+
+Neue Dateien (konfliktfrei), alles in `deploy/fredki-komplett/`:
+
+- `docker-compose.yml` – FredKI, SearXNG (eigene Suchmaschine), Caddy (HTTPS) und ein
+  einmaliger Einrichtungs-Container
+- `setup/setup.py` – richtet über die Admin-API ein: Admin-Passwort, Ministral als
+  Sprach- und Bildmodell, Werkzeuge „Websuche“ und „Seite lesen“, Agent „FredKI
+  Assistent“ (Bild-Upload + Websuche) inkl. Veröffentlichung
+- `setup/tools/` – Quellcode der beiden Werkzeuge
+- `install.sh`, `.env.example`, `Caddyfile`, `searxng/settings.yml`, `ANLEITUNG.md`
+
+Am FredKI-Code selbst wird nichts geändert – alles nutzt Bordmittel.
+
 ### Fertiges Docker-Image und einfache Installation
 
 Neue Dateien (konfliktfrei):

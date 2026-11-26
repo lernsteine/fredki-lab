@@ -1,0 +1,21 @@
+# SearXNG – eigene Suchmaschine für die FredKI-Websuche.
+# Nur intern erreichbar (kein öffentlicher Port). Der geheime Schlüssel kommt aus
+# der Umgebungsvariable SEARXNG_SECRET (.env).
+
+use_default_settings: true
+
+general:
+  instance_name: "FredKI Suche"
+
+server:
+  secret_key: "wird-durch-SEARXNG_SECRET-ersetzt"
+  limiter: false
+  image_proxy: false
+  method: "GET"
+
+search:
+  safe_search: 1
+  default_lang: "de"
+  formats:
+    - html
+    - json
