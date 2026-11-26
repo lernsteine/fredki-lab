@@ -1,0 +1,18 @@
+# FredKI® Lab – Installation mit Docker Compose
+#
+# Starten:       docker compose up -d
+# Aktualisieren: docker compose pull && docker compose up -d
+#
+# Einstellungen können in einer Datei .env neben dieser Datei angepasst werden
+# (Vorlage: .env.example).
+
+services:
+  fredki:
+    image: ${FREDKI_IMAGE:-ghcr.io/lernsteine/fredki-lab:latest}
+    container_name: ${FREDKI_CONTAINER_NAME:-fredki}
+    restart: always
+    ports:
+      - "${FREDKI_PORT:-8080}:8080"
+    volumes:
+      # Alle Daten (Datenbank, Uploads, Logs) liegen hier – dieses Verzeichnis sichern!
+      - ${FREDKI_DATA_DIR:-/opt/fredki}:/opt/maxkb
