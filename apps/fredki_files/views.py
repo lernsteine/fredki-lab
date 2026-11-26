@@ -21,7 +21,7 @@ import shutil
 import stat
 import time
 
-from django.http import FileResponse, Http404, HttpResponseNotAllowed
+from django.http import FileResponse, HttpResponseNotAllowed, HttpResponseNotFound
 
 FILES_DIR = os.environ.get('FREDKI_FILES_DIR', '/tmp/fredki-dateien')
 TTL_SECONDS = float(os.environ.get('FREDKI_FILES_TTL_HOURS', '24')) * 3600
@@ -64,19 +64,28 @@ def _cleanup():
             continue
 
 
+def _not_found():
+    # eigene Antwort statt Http404: FredKIs 404-Handler würde unter /chat sonst die Chat-Seite zeigen
+    return HttpResponseNotFound(
+        '<!doctype html><meta charset="utf-8"><title>Datei nicht gefunden</title>'
+        '<p style="font-family:sans-serif;margin:3em">Datei nicht gefunden oder abgelaufen. '
+        'Download-Links von FredKI sind 24 Stunden gültig – bitte die Datei im Chat neu erstellen lassen.</p>',
+        content_type='text/html; charset=utf-8')
+
+
 def download(request, token, name):
     if request.method not in ('GET', 'HEAD'):
         return HttpResponseNotAllowed(['GET', 'HEAD'])
     _cleanup()
     if not _TOKEN_RE.match(token):
-        raise Http404()
+        return _not_found()
     folder = os.path.join(FILES_DIR, token)
     try:
         folder_stat = os.lstat(folder)
     except OSError:
-        raise Http404()
+        return _not_found()
     if not stat.S_ISDIR(folder_stat.st_mode) or time.time() - folder_stat.st_mtime > TTL_SECONDS:
-        raise Http404()
+        return _not_found()
 
     files = []
     for entry in os.scandir(folder):
@@ -85,16 +94,16 @@ def download(request, token, name):
         if stat.S_ISREG(st.st_mode) and st.st_nlink == 1:
             files.append(entry)
     if len(files) != 1:
-        raise Http404()
+        return _not_found()
     file_entry = files[0]
     extension = file_entry.name.rsplit('.', 1)[-1].lower() if '.' in file_entry.name else ''
     if extension not in ALLOWED_EXTENSIONS:
-        raise Http404()
+        return _not_found()
 
     try:
         fd = os.open(file_entry.path, os.O_RDONLY | getattr(os, 'O_NOFOLLOW', 0))
     except OSError:
-        raise Http404()
+        return _not_found()
     content_type = mimetypes.guess_type(file_entry.name)[0] or 'application/octet-stream'
     response = FileResponse(os.fdopen(fd, 'rb'), as_attachment=True, filename=file_entry.name,
                             content_type=content_type)
