@@ -15,6 +15,22 @@ Dieses Repo (`lernsteine/fredki-lab`) ist eine Arbeitskopie von `lernsteine/Fred
 
 ## Änderungen
 
+### FredKI-Dateiausgabe + Werkzeug „Dokument erstellen“ (PDF, Word, Excel)
+
+Neue Dateien (konfliktfrei):
+
+- `apps/fredki_files/` – liefert von Werkzeugen erzeugte Dateien unter
+  `<chat-pfad>/fredki-datei/<token>/<datei>` aus; Ablage `/tmp/fredki-dateien`,
+  automatische Löschung nach 24 h (`FREDKI_FILES_DIR`, `FREDKI_FILES_TTL_HOURS`).
+  Liefert nur echte Dateien mit erlaubter Endung (keine Symlinks/Hardlinks/HTML).
+- `fredki-tools/dokument-erstellen/` – Werkzeug-Code und Anleitung
+
+Geänderte Dateien (bei Upstream-Merges prüfen):
+
+| Datei | Änderung |
+|---|---|
+| `apps/maxkb/urls/web.py` | eine Zeile: Route `fredki-datei/` unter dem Chat-Pfad eingebunden |
+
 ### Hinweis „Experimentelle Version“ (nur Lab – nicht ins Original übernehmen)
 
 - `README.md`: Warnhinweis ganz oben (experimentell, nicht für Produktivbetrieb, Verweis auf `lernsteine/FredKI`)
