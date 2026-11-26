@@ -20,7 +20,7 @@ Dieses Repo (`lernsteine/fredki-lab`) ist eine Arbeitskopie von `lernsteine/Fred
 Neue Dateien (konfliktfrei):
 
 - `.github/workflows/fredki-image.yml` – baut bei jeder Änderung auf `v2` das Image
-  `ghcr.io/lernsteine/fredki-lab:lab` (plus feste Version `lab-<commit>`)
+  `ghcr.io/lernsteine/fredki-lab:latest` (plus feste Version `<commit>`)
 - `deploy/` – `docker-compose.yml`, `.env.example`, `install.sh` für Hoster
 - `INSTALLATION.md` – Installationsanleitung für Hoster
 

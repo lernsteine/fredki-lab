@@ -8,7 +8,7 @@
 
 services:
   fredki:
-    image: ${FREDKI_IMAGE:-ghcr.io/lernsteine/fredki-lab:lab}
+    image: ${FREDKI_IMAGE:-ghcr.io/lernsteine/fredki-lab:latest}
     container_name: ${FREDKI_CONTAINER_NAME:-fredki}
     restart: always
     ports:

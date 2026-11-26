@@ -29,7 +29,7 @@ fi
 set -a; . ./.env; set +a
 mkdir -p "${FREDKI_DATA_DIR:-/opt/fredki}"
 
-echo "Lade FredKI-Image ${FREDKI_IMAGE:-ghcr.io/lernsteine/fredki-lab:lab} ..."
+echo "Lade FredKI-Image ${FREDKI_IMAGE:-ghcr.io/lernsteine/fredki-lab:latest} ..."
 if ! docker compose pull; then
   echo >&2
   echo "Das Image konnte nicht geladen werden. Ist das Paket privat, zuerst anmelden:" >&2

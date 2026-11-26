@@ -6,7 +6,7 @@ das offizielle MaxKB. Datenbank und Redis sind im Container enthalten.
 Bei jeder Änderung im Repo baut GitHub automatisch ein fertiges Image:
 
 ```
-ghcr.io/lernsteine/fredki-lab:lab
+ghcr.io/lernsteine/fredki-lab:latest
 ```
 
 ## Voraussetzungen
@@ -22,13 +22,13 @@ Wer MaxKB bisher so installiert hat, tauscht nur den Image-Namen:
 ```bash
 docker run -d --name=fredki --restart=always -p 8080:8080 \
   -v /opt/fredki:/opt/maxkb \
-  ghcr.io/lernsteine/fredki-lab:lab
+  ghcr.io/lernsteine/fredki-lab:latest
 ```
 
 Aktualisieren:
 
 ```bash
-docker pull ghcr.io/lernsteine/fredki-lab:lab
+docker pull ghcr.io/lernsteine/fredki-lab:latest
 docker rm -f fredki
 # dann den docker-run-Befehl oben erneut ausführen
 ```
@@ -60,7 +60,7 @@ docker login ghcr.io -u <github-benutzer>
 
 ## Feste Version statt „immer neueste“
 
-Jede Version hat zusätzlich einen eigenen Namen, z. B. `lab-1fd38a4`. Für einen
+Jede Version hat zusätzlich einen eigenen Namen, z. B. `1fd38a4`. Für einen
 Produktivbetrieb eine feste Version eintragen und gezielt aktualisieren.
 
 ## Wichtig
