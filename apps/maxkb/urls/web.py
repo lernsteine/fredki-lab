@@ -48,6 +48,8 @@ urlpatterns = [
     path(chat_api_prefix, include("chat.urls")),
     path(f'{admin_ui_prefix[1:]}/', include('oss.retrieval_urls', namespace='admin_oss_retrieval')),
     path(f'{chat_ui_prefix[1:]}/', include('oss.retrieval_urls', namespace='chat_oss_retrieval')),
+    # FredKI-Dateiausgabe: Downloads von Dokumenten, die Werkzeuge erzeugt haben
+    path(f'{chat_ui_prefix[1:]}/fredki-datei/', include('fredki_files.urls', namespace='fredki_files')),
 ]
 init_doc(urlpatterns, chat_urlpatterns)
 
