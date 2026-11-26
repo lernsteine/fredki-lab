@@ -15,6 +15,11 @@ Dieses Repo (`lernsteine/fredki-lab`) ist eine Arbeitskopie von `lernsteine/Fred
 
 ## Änderungen
 
+### Hinweis „Experimentelle Version“ (nur Lab – nicht ins Original übernehmen)
+
+- `README.md`: Warnhinweis ganz oben (experimentell, nicht für Produktivbetrieb, Verweis auf `lernsteine/FredKI`)
+- `.github/workflows/fredki-image.yml`: Paketbeschreibung je nach Repo – im Lab als experimentell gekennzeichnet
+
 ### Fertiges Docker-Image und einfache Installation
 
 Neue Dateien (konfliktfrei):

@@ -1,5 +1,14 @@
 # FredKI
 
+> [!WARNING]
+> **Experimentelle Version / Experimental version**
+>
+> Dies ist **FredKI® Lab**, die Entwicklungs- und Testversion von FredKI®. Hier werden neue Funktionen ausprobiert – sie können unfertig sein oder sich jederzeit ändern. **Nicht für den Produktivbetrieb.** Die stabile Version ist [lernsteine/FredKI](https://github.com/lernsteine/FredKI).
+>
+> This is **FredKI® Lab**, the development and testing version of FredKI®. Features may be unfinished or change at any time. **Not for production use.** The stable version is [lernsteine/FredKI](https://github.com/lernsteine/FredKI).
+>
+> Lab-Paket / Lab image: `ghcr.io/lernsteine/fredki-lab:latest` · Komplettpaket mit Bilderkennung und Websuche: [`deploy/fredki-komplett`](deploy/fredki-komplett/ANLEITUNG.md) (sobald übernommen)
+
 **Open-source AI agent platform for learning platforms such as Moodle – maintained by [lernsteine.com](https://lernsteine.com).**
 
 FredKI is free software under the GNU GPL v3. You can self-host it without payment or limits (see [Quick start](#quick-start)), or use the hosted FredKI service by lernsteine.com.

@@ -59,12 +59,18 @@ jobs:
         run: |
           SHORT_SHA=$(git rev-parse --short HEAD)
           IMAGE="ghcr.io/${GITHUB_REPOSITORY,,}"
+          if [ "${GITHUB_REPOSITORY,,}" = "lernsteine/fredki-lab" ]; then
+            DESCRIPTION="FredKI Lab - EXPERIMENTELLE Entwicklungsversion, nicht fuer den Produktivbetrieb. Stabile Version: github.com/lernsteine/FredKI"
+          else
+            DESCRIPTION="FredKI - Open-Source-KI-Agentenplattform fuer Lernplattformen wie Moodle (lernsteine.com)"
+          fi
           docker buildx build \
             --platform linux/amd64 \
             --build-arg DOCKER_IMAGE_TAG="fredki-${SHORT_SHA}" \
             --build-arg BUILD_AT="$(TZ=Europe/Berlin date +'%Y-%m-%dT%H:%M')" \
             --build-arg GITHUB_COMMIT="${SHORT_SHA}" \
             --label org.opencontainers.image.source="https://github.com/${GITHUB_REPOSITORY}" \
+            --label org.opencontainers.image.description="${DESCRIPTION}" \
             --tag "${IMAGE}:latest" \
             --tag "${IMAGE}:${SHORT_SHA}" \
             --push \
