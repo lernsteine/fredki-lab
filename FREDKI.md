@@ -15,6 +15,15 @@ Dieses Repo (`lernsteine/fredki-lab`) ist eine Arbeitskopie von `lernsteine/Fred
 
 ## Änderungen
 
+### Deutsche Zeitzone und direkterer Assistent
+
+- `installer/Dockerfile`: `MAXKB_TIME_ZONE=Europe/Berlin` als Vorgabe im Image. MaxKB nimmt
+  sonst `Asia/Shanghai` (`apps/maxkb/conf.py`), dadurch lag `{{global.time}}` 7 Stunden falsch.
+  Per Umgebungsvariable weiterhin überschreibbar.
+- `deploy/fredki-komplett/setup/setup.py`: Anweisung des „FredKI Assistent“ geschärft – aktuelle
+  Daten immer zuerst per Websuche, keine erfundenen Zahlen, kurze Antworten ohne Optionsmenüs,
+  höchstens eine Rückfrage, nur tatsächliche Fähigkeiten nennen.
+
 ### FredKI-Dateiausgabe + Werkzeug „Dokument erstellen“ (PDF, Word, Excel)
 
 Neue Dateien (konfliktfrei):
