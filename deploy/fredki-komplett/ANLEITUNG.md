@@ -6,6 +6,7 @@ Dieses Paket startet ein vollständig eingerichtetes FredKI® unter
 - **Bilder erkennen:** Bilder im Chat hochladen, FredKI beschreibt und erklärt sie
   (Ministral 3 auf dem GPU-Server)
 - **Websuche:** eigene Suchmaschine (SearXNG) auf diesem Server, ohne externe API-Schlüssel
+- **Dokumente erstellen:** PDF, Word und Excel direkt aus dem Chat, als Download-Link (24 h gültig)
 - **HTTPS:** Zertifikat von Let's Encrypt, automatisch erneuert (Caddy)
 - **Automatische Einrichtung:** Modell, Werkzeuge und ein fertiger Agent werden beim
   ersten Start angelegt – nichts muss in der Oberfläche geklickt werden

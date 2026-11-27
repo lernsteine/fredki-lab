@@ -4,8 +4,8 @@ FredKI® Komplett – automatische Ersteinrichtung
 Läuft einmal nach dem Start und richtet über die Admin-API ein:
   1. Admin-Passwort setzen
   2. Ministral (oder ein anderes Modell) als Sprachmodell und als Bildmodell anlegen
-  3. Werkzeuge „Websuche“ (SearXNG) und „Seite lesen“ anlegen und aktivieren
-  4. Agent „FredKI Assistent“ anlegen (Bilder hochladen + Websuche) und veröffentlichen
+  3. Werkzeuge „Websuche“ (SearXNG), „Seite lesen“ und „Dokument erstellen“ anlegen und aktivieren
+  4. Agent „FredKI Assistent“ anlegen (Bilder, Websuche, Dokumente) und veröffentlichen
 
 Der Fortschritt wird in /state/setup-state.json gespeichert. Ein erneuter Lauf setzt
 dort fort, wo er aufgehört hat; ist alles erledigt, beendet er sich sofort.
@@ -255,18 +255,39 @@ def step_tools(state, token):
         )
         save_state(state)
         log("Werkzeug „Seite lesen“ angelegt.")
+    if not state.get("tool_dokument_id"):
+        state["tool_dokument_id"] = create_tool(
+            token,
+            "Dokument erstellen",
+            "Erstellt PDF-, Word- oder Excel-Dateien zum Herunterladen.",
+            read_tool("dokument_erstellen.py"),
+            [
+                {"name": "titel", "type": "string", "is_required": True, "source": "custom", "desc": "Titel des Dokuments"},
+                {"name": "inhalt", "type": "string", "is_required": True, "source": "custom", "desc": "Inhalt in Markdown"},
+                {"name": "dateiformat", "type": "string", "is_required": False, "source": "custom",
+                 "desc": "pdf, docx oder xlsx"},
+            ],
+        )
+        save_state(state)
+        log("Werkzeug „Dokument erstellen“ angelegt.")
 
 
-SYSTEM_PROMPT = """Du bist der FredKI Assistent. Antworte freundlich, klar und auf Deutsch, außer der Nutzer schreibt in einer anderen Sprache.
+SYSTEM_PROMPT = """Aktuelles Datum und Uhrzeit: {{global.time}}. Nutze dieses Datum, um zu beurteilen, was aktuell ist.
+
+Du bist der FredKI Assistent. Antworte freundlich, klar und auf Deutsch, außer der Nutzer schreibt in einer anderen Sprache.
 
 Bilder: Wenn der Nutzer ein Bild hochlädt, beschreibe und erkläre es genau. Lies enthaltenen Text vollständig ab, wenn danach gefragt wird.
 
-Websuche: Nutze das Werkzeug „websuche“, wenn eine Frage aktuelle Informationen braucht (Nachrichten, Preise, Termine, neue Entwicklungen) oder wenn du dir nicht sicher bist. Mit „seite_lesen“ kannst du einen Treffer genauer lesen. Verwende dann nur Informationen aus den Treffern und nenne am Ende die Quellen als Links. Erfinde keine Quellen."""
+Websuche: Nutze das Werkzeug „websuche“, wenn eine Frage aktuelle Informationen braucht (Nachrichten, Preise, Termine, neue Versionen) oder wenn du dir nicht sicher bist. Mit „seite_lesen“ kannst du einen Treffer genauer lesen. Verwende dann nur Informationen aus den Treffern und nenne am Ende die Quellen als Links. Erfinde keine Quellen. Bevorzuge die neuesten Quellen: nimm bei zeitbezogenen Fragen die aktuelle Jahreszahl in den Suchbegriff auf und gib an, auf welchem Stand (Datum) die gefundenen Informationen sind.
+
+Dokumente: Wenn der Nutzer ein Dokument, ein PDF, eine Word- oder Excel-Datei möchte, nutze das Werkzeug „dokument_erstellen“. Schreibe den Inhalt vollständig in Markdown (Überschriften mit #, Listen mit -, Tabellen mit |). Gib den Download-Link aus dem Ergebnis unverändert an den Nutzer weiter.
+
+Verwende im Werkzeug-Aufruf niemals doppelte Anführungszeichen (") – nutze stattdessen „…“ oder einfache Anführungszeichen."""
 
 
 def build_workflow(state):
     llm_id = state["llm_model_id"]
-    tool_ids = [state["tool_websuche_id"], state["tool_seite_lesen_id"]]
+    tool_ids = [state["tool_websuche_id"], state["tool_seite_lesen_id"], state["tool_dokument_id"]]
     file_upload_setting = {
         "maxFiles": 3,
         "fileLimit": 20,
@@ -295,8 +316,9 @@ def build_workflow(state):
                     "node_data": {
                         "desc": "",
                         "name": AGENT_NAME,
-                        "prologue": "Hallo, ich bin der FredKI Assistent. Du kannst mir Fragen stellen, "
-                        "Bilder hochladen oder mich etwas im Internet nachschlagen lassen.",
+                        "prologue": "Hallo, ich bin der FredKI Assistent. Ich kann Bilder verstehen (einfach über die "
+                        "Büroklammer hochladen), aktuelle Informationen im Internet suchen und dir Ergebnisse als PDF, "
+                        "Word- oder Excel-Datei erstellen. Wie kann ich helfen?",
                         "file_upload_enable": True,
                         "file_upload_setting": file_upload_setting,
                     },
@@ -375,7 +397,7 @@ def step_agent(state, token):
             f"/workspace/{WS}/application",
             {
                 "name": AGENT_NAME,
-                "desc": "Beantwortet Fragen, versteht hochgeladene Bilder und sucht bei Bedarf im Internet.",
+                "desc": "Beantwortet Fragen, versteht Bilder, sucht im Internet und erstellt Dokumente.",
                 "prologue": base["prologue"],
                 "type": "WORK_FLOW",
                 "folder_id": WS,

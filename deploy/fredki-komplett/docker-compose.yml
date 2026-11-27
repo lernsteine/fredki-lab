@@ -25,7 +25,8 @@ services:
       SEARXNG_SECRET: ${SEARXNG_SECRET:?SEARXNG_SECRET fehlt – install.sh ausführen}
       SEARXNG_BASE_URL: http://searxng:8080/
     volumes:
-      - ./searxng/settings.yml:/etc/searxng/settings.yml:ro
+      # ganzer Ordner (nicht nur die Datei): SearXNG legt dort beim Start eigene Dateien ab
+      - ./searxng:/etc/searxng
     networks:
       - fredki
     # bewusst kein öffentlicher Port: nur FredKI nutzt die Suchmaschine
