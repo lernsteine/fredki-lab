@@ -36,6 +36,21 @@ Geänderte Dateien (bei Upstream-Merges prüfen):
 - `README.md`: Warnhinweis ganz oben (experimentell, nicht für Produktivbetrieb, Verweis auf `lernsteine/FredKI`)
 - `.github/workflows/fredki-image.yml`: Paketbeschreibung je nach Repo – im Lab als experimentell gekennzeichnet
 
+### Komplettpaket „FredKI Komplett“ (Bilder + Websuche, fertig eingerichtet)
+
+Neue Dateien (konfliktfrei), alles in `deploy/fredki-komplett/`:
+
+- `docker-compose.yml` – FredKI, SearXNG (eigene Suchmaschine), Caddy (HTTPS) und ein
+  einmaliger Einrichtungs-Container
+- `setup/setup.py` – richtet über die Admin-API ein: Admin-Passwort, Ministral als
+  Sprach- und Bildmodell, Werkzeuge „Websuche“, „Seite lesen“ und „Dokument erstellen“,
+  Agent „FredKI Assistent“ (Bilder, Websuche, Dokumente, aktuelles Datum) inkl. Veröffentlichung
+- `setup/tools/` – Quellcode der Werkzeuge; `dokument_erstellen.py` ist eine Kopie aus
+  `fredki-tools/dokument-erstellen/` (bei Änderungen beide anpassen)
+- `install.sh`, `.env.example`, `Caddyfile`, `searxng/settings.yml`, `ANLEITUNG.md`
+
+Am FredKI-Code selbst wird nichts geändert – alles nutzt Bordmittel.
+
 ### Fertiges Docker-Image und einfache Installation
 
 Neue Dateien (konfliktfrei):

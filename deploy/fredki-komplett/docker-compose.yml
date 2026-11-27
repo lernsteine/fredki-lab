@@ -1,0 +1,72 @@
+# FredKI® Komplett: FredKI + eigene Suchmaschine (SearXNG) + HTTPS (Caddy)
+# + automatische Ersteinrichtung (Modell, Werkzeuge, Agent).
+#
+# Starten:        ./install.sh        (oder: docker compose up -d)
+# Aktualisieren:  docker compose pull && docker compose up -d
+# Logs:           docker compose logs -f
+# Einrichtung erneut ausführen:  docker compose run --rm setup
+
+name: fredki
+
+services:
+  fredki:
+    image: ${FREDKI_IMAGE:-ghcr.io/lernsteine/fredki-lab:latest}
+    restart: always
+    volumes:
+      # Alle FredKI-Daten (Datenbank, Uploads, Logs) – dieses Verzeichnis sichern!
+      - ./daten/fredki:/opt/maxkb
+    networks:
+      - fredki
+
+  searxng:
+    image: docker.io/searxng/searxng:latest
+    restart: always
+    environment:
+      SEARXNG_SECRET: ${SEARXNG_SECRET:?SEARXNG_SECRET fehlt – install.sh ausführen}
+      SEARXNG_BASE_URL: http://searxng:8080/
+    volumes:
+      # ganzer Ordner (nicht nur die Datei): SearXNG legt dort beim Start eigene Dateien ab
+      - ./searxng:/etc/searxng
+    networks:
+      - fredki
+    # bewusst kein öffentlicher Port: nur FredKI nutzt die Suchmaschine
+
+  caddy:
+    image: docker.io/library/caddy:2
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      DOMAIN: ${DOMAIN:?DOMAIN fehlt in .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./daten/caddy:/data
+    depends_on:
+      - fredki
+    networks:
+      - fredki
+
+  setup:
+    image: docker.io/library/python:3.12-alpine
+    restart: "no"
+    command: ["python", "/setup/setup.py"]
+    env_file: .env
+    environment:
+      FREDKI_INTERNAL_URL: http://fredki:8080
+      SEARXNG_INTERNAL_URL: http://searxng:8080
+    volumes:
+      - ./setup:/setup:ro
+      - ./daten/setup:/state
+    depends_on:
+      - fredki
+      - searxng
+    networks:
+      - fredki
+
+networks:
+  fredki:
+    ipam:
+      config:
+        # Eigenes Netz außerhalb von 172.17.0.0/16, das FredKI-Werkzeugen gesperrt ist
+        - subnet: ${FREDKI_SUBNET:-10.89.0.0/24}
