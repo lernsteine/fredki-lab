@@ -45,6 +45,7 @@ ENV MAXKB_VERSION="${DOCKER_IMAGE_TAG} (build at ${BUILD_AT}, commit: ${GITHUB_C
     MAXKB_LOCAL_MODEL_HOST=127.0.0.1 \
     MAXKB_LOCAL_MODEL_PORT=11636 \
     MAXKB_LOCAL_MODEL_PROTOCOL=http \
+    MAXKB_TIME_ZONE=Europe/Berlin \
     PIP_TARGET=/opt/maxkb/python-packages
 
 WORKDIR /opt/maxkb-app
