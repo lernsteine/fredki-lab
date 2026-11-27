@@ -15,6 +15,16 @@ Dieses Repo (`lernsteine/fredki-lab`) ist eine Arbeitskopie von `lernsteine/Fred
 
 ## Änderungen
 
+### Spracherkennung mit eigenem Whisper-Server (whisper.cpp)
+
+- `apps/models_provider/impl/openai_model_provider/model/stt.py`:
+  - Sprache nicht mehr fest `zh`. Ohne Angabe erkennt Whisper die Sprache selbst; optional
+    über Modellparameter `language` oder Umgebungsvariable `FREDKI_STT_LANGUAGE` (z. B. `de`).
+  - Verbindungstest: Hat der Server kein `/models` (whisper.cpp), wird stattdessen eine kurze
+    Probe-Transkription gemacht.
+- Einbindung: Modell „OpenAI“ → Typ Spracherkennung, API-Adresse `https://whisper.edugo-server.de/v1`,
+  API-Key beliebig (z. B. `none`), Modellname `whisper-large-v3-turbo`.
+
 ### Deutsche Zeitzone und direkterer Assistent
 
 - `installer/Dockerfile`: `MAXKB_TIME_ZONE=Europe/Berlin` als Vorgabe im Image. MaxKB nimmt

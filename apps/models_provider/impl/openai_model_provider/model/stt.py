@@ -1,5 +1,6 @@
 import asyncio
 import io
+import os
 from typing import Dict
 
 from openai import OpenAI
@@ -51,8 +52,14 @@ class OpenAISpeechToText(MaxKBBaseModel, BaseSpeechToText):
             base_url=self.api_base,
             api_key=self.api_key
         )
-        response_list = client.models.with_raw_response.list()
-        # print(response_list)
+        try:
+            client.models.with_raw_response.list()
+        except Exception:
+            # FredKI: whisper.cpp und ähnliche Server haben kein /models – stattdessen Probe-Transkription
+            test_mp3 = os.path.join(os.path.dirname(__file__), '..', '..', 'vllm_model_provider', 'model',
+                                    'iat_mp3_16k.mp3')
+            with open(test_mp3, 'rb') as audio_file:
+                self.speech_to_text(audio_file)
 
     def speech_to_text(self, audio_file):
         client = OpenAI(
@@ -63,12 +70,15 @@ class OpenAISpeechToText(MaxKBBaseModel, BaseSpeechToText):
         buffer = io.BytesIO(audio_data)
         buffer.name = "file.mp3"  # this is the important line
 
-        filter_params = {k: v for k,v in self.params.items() if k not in {'model_id','use_local','streaming'}}
+        filter_params = {k: v for k,v in self.params.items() if k not in {'model_id','use_local','streaming','language'}}
         transcription_params = {
             'model': self.model,
             'file': buffer,
-            'language': 'zh'
         }
+        # FredKI: Sprache nicht fest auf Chinesisch; leer = Whisper erkennt die Sprache selbst
+        language = self.params.get('language') or os.environ.get('FREDKI_STT_LANGUAGE', '')
+        if language:
+            transcription_params['language'] = language
 
         res = client.audio.transcriptions.create(**transcription_params,extra_body=filter_params)
         return res.text
